@@ -1,0 +1,17 @@
+version: '3'
+services:
+
+  masspayments:
+
+    image: "10.90.0.30:8123/confidence/masspayments/local:1.7.0"
+    ports:
+      - "8090:8090"
+      - "8787:8787"
+
+    environment:
+      TZ: America/Sao_Paulo
+      mp.liquibase.url: jdbc:sqlserver://127.0.0.1;databaseName=masspayments
+
+    volumes:
+      - /mnt/:/mnt/
+      - /logs:/logs
