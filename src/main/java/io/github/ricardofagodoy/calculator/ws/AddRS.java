@@ -4,15 +4,17 @@ import io.github.ricardofagodoy.calculator.gateway.AddGateway;
 import io.github.ricardofagodoy.calculator.gateway.dto.IntegerPair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.core.Response;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+import javax.websocket.server.PathParam;
+import javax.xml.ws.Response;
 
-import static javax.ws.rs.core.Response.Status.ACCEPTED;
-import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
-
-@Path("/add")
+@RestController
+@RequestMapping("/add")
 public class AddRS {
 
     private static final Logger log = LoggerFactory.getLogger(AddRS.class);
@@ -23,9 +25,8 @@ public class AddRS {
         this.addGateway = addGateway;
     }
 
-    @GET
-    @Path("/{a}/{b}")
-    public Response add(@PathParam("a") String a, @PathParam("b") String b) {
+    @RequestMapping(path = "/{a}/{b}", method = RequestMethod.GET)
+    public ResponseEntity add(@PathVariable("a") String a, @PathVariable("b") String b) {
 
         log.info("Received add for {} and {}", a, b);
 
@@ -33,9 +34,9 @@ public class AddRS {
             IntegerPair integerPair = new IntegerPair(Integer.parseInt(a), Integer.parseInt(b));
             this.addGateway.send(integerPair);
         } catch (Exception e) {
-            return Response.status(BAD_REQUEST).build();
+            return ResponseEntity.badRequest().build();
         }
 
-        return Response.status(ACCEPTED).build();
+        return ResponseEntity.accepted().build();
     }
 }

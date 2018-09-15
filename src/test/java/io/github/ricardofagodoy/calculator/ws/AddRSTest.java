@@ -3,10 +3,9 @@ package io.github.ricardofagodoy.calculator.ws;
 import io.github.ricardofagodoy.calculator.gateway.AddGateway;
 import org.junit.Before;
 import org.junit.Test;
-import javax.ws.rs.core.Response;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
-import static javax.ws.rs.core.Response.Status.ACCEPTED;
-import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 
@@ -22,32 +21,32 @@ public class AddRSTest {
     @Test
     public void givenTwoValidIntegersThenAcceptedMustBeReturned() {
 
-        Response response = addRS.add("1", "2");
+        ResponseEntity response = addRS.add("1", "2");
 
-        assertEquals(ACCEPTED.getStatusCode(), response.getStatus());
+        assertEquals(HttpStatus.ACCEPTED, response.getStatusCode());
     }
 
     @Test
     public void givenInvalidIntegerAThenBadRequestMustBeReturned() {
 
-        Response response = addRS.add("a", "2");
+        ResponseEntity response = addRS.add("a", "2");
 
-        assertEquals(BAD_REQUEST.getStatusCode(), response.getStatus());
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
 
     @Test
     public void givenInvalidIntegerBThenBadRequestMustBeReturned() {
 
-        Response response = addRS.add("1", "b");
+        ResponseEntity response = addRS.add("1", "b");
 
-        assertEquals(BAD_REQUEST.getStatusCode(), response.getStatus());
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
 
     @Test
     public void givenEmptyValuesThenBadRequestMustBeReturned() {
 
-        Response response = addRS.add("", "");
+        ResponseEntity response = addRS.add("", "");
 
-        assertEquals(BAD_REQUEST.getStatusCode(), response.getStatus());
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
 }
